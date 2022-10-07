@@ -1,0 +1,46 @@
+Vagrant.configure(2) do |config|
+    # начинает цикл, подставляя вместо «Vagrant.configure» ⇒ «config»
+    config.vm.provision "shell", reboot: true, privileged: true, path: "scripts/mirror.sh"
+        # т.к. Centos8 не поддерживается, скачиваем с зеркала, privileged - запуск от рута
+    config.vm.box_check_update = false
+        # По-умолчанию, vagrant перед каждым запуском образа проверяет
+        # репозиторий на наличие обновлений. Это занимает какое-то время
+        # и в нашем случае не нужно.
+    config.vm.box = "centos/8"
+        # указываем название образа
+    config.vm.define "ogartharS" do |s|
+        # задаёт имя машины для vagrant и VBox
+        s.vm.provider "virtualbox" do |vb|
+        # vb.gui = false # говорим нашему провайдеру, что нам не нужен графический интерфейс
+        # (для VirtualBox по-умолачнию идёт значение False)
+            vb.memory = 1024
+            vb.cpus = 1
+            vb.customize ["modifyvm", :id, "--name", "ogartharS", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
+        # выделяем 1Гб памяти и 1 ядро
+
+        end
+        s.vm.network :private_network, ip: "192.168.42.110"
+        # задаем ip адрес. Если не указать его явно, то присвоится дефолтный
+        s.vm.hostname = "ogartharS"  
+        # задаём hostname
+        s.vm.provision "shell", privileged: true, path: "scripts/server.sh"
+
+        s.trigger.after :up do |trigger|
+            trigger.name = "create token"
+            trigger.run = { "inline": "/bin/bash -c 'scp -i ./.vagrant/machines/ogartharS/virtualbox/private_key -o StrictHostKeyChecking=no -r -P2222 vagrant@127.0.0.1:/vagrant/token ./confs/token'" }
+        end
+    end
+
+# для втворой машины:
+    config.vm.define "ogartharSW" do |sw|
+        sw.vm.provider "virtualbox" do |vb|
+            vb.memory = 1024
+            vb.cpus = 1
+            vb.customize ["modifyvm", :id, "--name", "ogartharSW", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
+        end
+        sw.vm.provision "file", source: "./confs/token", destination: "/vagrant/token"
+        sw.vm.network :private_network, ip: "192.168.42.111"
+        sw.vm.hostname = "ogartharSW"
+        sw.vm.provision "shell", privileged: true, path: "scripts/worker.sh"
+	end
+end
