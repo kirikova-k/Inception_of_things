@@ -3,3 +3,4 @@ curl -sfL https://get.k3s.io | sh -s - agent \
 --node-ip "192.168.42.111" \
 --flannel-iface eth1 \
 --token-file /vagrant/token
+sudo apt-get install virtualbox-guest-additions-iso

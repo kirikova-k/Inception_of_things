@@ -1,6 +1,6 @@
 Vagrant.configure(2) do |config|
     # начинает цикл, подставляя вместо «Vagrant.configure» ⇒ «config»
-    config.vm.provision "shell", reboot: true, privileged: true, path: "scripts/mirror.sh"
+    config.vm.provision "shell", reboot: false, privileged: true, path: "scripts/mirror.sh"
         # т.к. Centos8 не поддерживается, скачиваем с зеркала, privileged - запуск от рута
     config.vm.box_check_update = false
         # По-умолчанию, vagrant перед каждым запуском образа проверяет
@@ -17,8 +17,8 @@ Vagrant.configure(2) do |config|
             vb.cpus = 1
             vb.customize ["modifyvm", :id, "--name", "ogartharS", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
         # выделяем 1Гб памяти и 1 ядро
-
         end
+        
         s.vm.network :private_network, ip: "192.168.42.110"
         # задаем ip адрес. Если не указать его явно, то присвоится дефолтный
         s.vm.hostname = "ogartharS"  
