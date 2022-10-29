@@ -1,12 +1,12 @@
 Vagrant.configure(2) do |config|
     # начинает цикл, подставляя вместо «Vagrant.configure» ⇒ «config»
-    config.vm.provision "shell", reboot: false, privileged: true, path: "scripts/mirror.sh"
+    # config.vm.provision "shell", reboot: false, privileged: true, path: "scripts/mirror.sh"
         # т.к. Centos8 не поддерживается, скачиваем с зеркала, privileged - запуск от рута
     config.vm.box_check_update = false
         # По-умолчанию, vagrant перед каждым запуском образа проверяет
         # репозиторий на наличие обновлений. Это занимает какое-то время
         # и в нашем случае не нужно.
-    config.vm.box = "centos/8"
+    config.vm.box = "bento/ubuntu-20.04"
         # указываем название образа
     config.vm.define "ogartharS" do |s|
         # задаёт имя машины для vagrant и VBox
