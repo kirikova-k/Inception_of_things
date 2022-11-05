@@ -1,1 +1,1 @@
-{"name":"bento/ubuntu-20.04","version":"202206.03.0","provider":"virtualbox","directory":"boxes/bento-VAGRANTSLASH-ubuntu-20.04/202206.03.0/virtualbox"}
+{"name":"boxen/ubuntu-22.04-x86_64","version":"2022.06.08.18","provider":"virtualbox","directory":"boxes/boxen-VAGRANTSLASH-ubuntu-22.04-x86_64/2022.06.08.18/virtualbox"}
