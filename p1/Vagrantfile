@@ -6,22 +6,22 @@ Vagrant.configure(2) do |config|
     config.vm.box_check_update = false
     # указываем название образа
     config.vm.box = "boxen/ubuntu-22.04-x86_64"
-    # "bento/ubuntu-20.04"
+    # задаёт имя машины для vagrant и VBox
     config.vm.define "ogartharS" do |s|
-        # задаёт имя машины для vagrant и VBox
         s.vm.provider "virtualbox" do |vb|
-        # vb.gui = false # говорим нашему провайдеру, что нам не нужен графический интерфейс
-        # (для VirtualBox по-умолачнию идёт значение False)
+            # выделяем 1Гб памяти и 1 ядро
             vb.memory = 1024
             vb.cpus = 1
-            vb.customize ["modifyvm", :id, "--name", "ogartharS", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
-        # выделяем 1Гб памяти и 1 ядро
+            # vb.customize ["modifyvm", :id, "--name", "ogartharS", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
         end
-        
-        s.vm.network :private_network, ip: "192.168.42.110"
         # задаем ip адрес. Если не указать его явно, то присвоится дефолтный
-        s.vm.hostname = "ogartharS"  
+        s.vm.network :private_network, ip: "192.168.42.110"
         # задаём hostname
+        s.vm.hostname = "ogartharS"
+        # запускаем скрипт с настройками сервера
+        s.vm.provision "shell", privileged: true, path: "scripts/server.sh"
+        # создаем токен по которому агентская нода подключится к серверной и кладем его в корень проекта
+
         s.vm.provision "shell", privileged: true, path: "scripts/server.sh"
 
         s.trigger.after :up do |trigger|
@@ -35,7 +35,7 @@ Vagrant.configure(2) do |config|
         sw.vm.provider "virtualbox" do |vb|
             vb.memory = 1024
             vb.cpus = 1
-            vb.customize ["modifyvm", :id, "--name", "ogartharSW", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
+            # vb.customize ["modifyvm", :id, "--name", "ogartharSW", "--natdnsproxy1", "on", "--natdnshostresolver1", "on"]
         end
         sw.vm.provision "file", source: "./confs/token", destination: "/vagrant/token"
         sw.vm.network :private_network, ip: "192.168.42.111"
