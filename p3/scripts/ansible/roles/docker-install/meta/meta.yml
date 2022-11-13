@@ -1,0 +1,8 @@
+galaxy_info:
+  author: Dmitry Churlyaev
+  description: Install docker and dependencies
+  min_ansible_version: 2.1
+  platforms:
+    - name: Ubuntu
+  dependencies:
+    - role: preconfig

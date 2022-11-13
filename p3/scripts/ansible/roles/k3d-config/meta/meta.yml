@@ -1,0 +1,12 @@
+galaxy_info:
+  author: Dmitry Churlyaev
+  description: Create and config k3d cluster
+  license: MIT
+  min_ansible_version: 2.1
+  platforms:
+    - name: Ubuntu
+  dependencies:
+    - role: preconfig
+    - role: docker-install
+    - role: andrewrothstein.k3d
+    - role: reboot
