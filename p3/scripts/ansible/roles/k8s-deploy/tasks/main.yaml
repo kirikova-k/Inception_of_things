@@ -1,6 +1,6 @@
 ---
 - name: Install the latest version of python
-  dnf:
+  apt:
     name: python3
     state: latest
   become: true
@@ -68,7 +68,7 @@
     definition: "{{ lookup('file', '../../confs/argo/ingress.yaml') | from_yaml_all }}"
 
 - name: Get login token from argocd
-  ansible.builtin.shell: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode && echo
+  shell: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode && echo
   register: argocd_token
 
 - name: Show argocd token

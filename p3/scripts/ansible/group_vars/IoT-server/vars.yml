@@ -1,7 +1,5 @@
 users:
-- ogarthar
 - zytrams
-- cyuriko
 
 kubectl_conf:
   path:
@@ -12,4 +10,3 @@ kubectl_conf:
   release_url:          'https://storage.googleapis.com/kubernetes-release/release'
   install_completion:   true
   ensure_prerequisites: false
-
