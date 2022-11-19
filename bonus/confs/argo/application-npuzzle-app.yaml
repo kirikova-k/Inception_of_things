@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: npuzzle-app-argo-application
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://10.0.2.2:8080/root/gitlab.git
+    targetRevision: HEAD
+    # path: npuzzle-app
+    path: ./
+  destination: 
+    server: https://kubernetes.default.svc
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=false
+
+    automated:
+      selfHeal: true
+      prune: true
